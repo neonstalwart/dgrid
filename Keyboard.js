@@ -2,13 +2,12 @@ define([
 	"dojo/_base/declare",
 	"dojo/aspect",
 	"dojo/on",
-	"./List",
 	"dojo/_base/lang",
 	"dojo/has",
 	"put-selector/put",
 	"dojo/_base/Deferred",
 	"dojo/_base/sniff"
-], function(declare, aspect, on, List, lang, has, put, Deferred){
+], function(declare, aspect, on, lang, has, put, Deferred){
 
 var delegatingInputTypes = {
 		checkbox: 1,
@@ -153,8 +152,7 @@ return declare(null, {
 				if(event.metaKey || event.altKey) {
 					return;
 				}
-				
-				var focusedElement = event.target;
+
 				var keyCode = event.keyCode;
 				if(handledEvent(event)){
 					// text boxes and other inputs that can use direction keys should be ignored and not affect cell/row navigation
@@ -174,7 +172,7 @@ return declare(null, {
 				if(isNaN(move)){
 					return;
 				}
-				var nextSibling, columnId, cell = grid.cell(cellFocusedElement);
+				var columnId, cell = grid.cell(cellFocusedElement);
 				var orientation;
 				if(keyCode == 37 || keyCode == 39){
 					// horizontal movement (left and right keys)
@@ -220,7 +218,7 @@ return declare(null, {
 			return function(target){
 				target = target || cellFocusedElement;
 				focusOnCell(target, { target: target });
-			}
+			};
 		}
 		
 		if(this.tabableHeader){

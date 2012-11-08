@@ -1,5 +1,5 @@
-define(["dojo/_base/kernel", "dojo/_base/array", "dojo/on", "dojo/aspect", "dojo/_base/sniff", "put-selector/put"],
-function(kernel, arrayUtil, on, aspect, has, put){
+define(["dojo/_base/kernel", "dojo/_base/array", "dojo/aspect", "dojo/_base/sniff", "put-selector/put"],
+function(kernel, arrayUtil, aspect, has, put){
 	return function(column, type){
 		
 		var listeners = [],

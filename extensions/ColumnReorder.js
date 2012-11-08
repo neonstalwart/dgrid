@@ -1,13 +1,11 @@
 define([
-	"dojo/_base/lang",
 	"dojo/_base/declare",
 	"dojo/_base/array",
 	"dojo/on",
-	"dojo/query",
 	"dojo/dnd/Source",
 	"put-selector/put",
 	"xstyle/css!../css/extensions/ColumnReorder.css"
-], function(lang, declare, arrayUtil, on, query, DndSource, put){
+], function(declare, arrayUtil, on, DndSource, put){
 	var dndTypeRx = /-(\d+)(?:-(\d+))?$/; // used to determine subrow from dndType
 	
 	// The following 2 functions are used by onDropInternal logic for

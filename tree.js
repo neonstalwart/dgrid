@@ -1,5 +1,5 @@
-define(["dojo/_base/declare", "dojo/_base/array", "dojo/_base/Deferred", "dojo/has", "dojo/query", "dojo/on", "dojo/aspect", "./Grid", "dojo/has!touch?./util/touch", "put-selector/put"],
-function(declare, arrayUtil, Deferred, has, querySelector, on, aspect, Grid, touchUtil, put){
+define(["dojo/_base/array", "dojo/_base/Deferred", "dojo/has", "dojo/query", "dojo/on", "dojo/aspect", "./Grid", "dojo/has!touch?./util/touch", "put-selector/put"],
+function(arrayUtil, Deferred, has, querySelector, on, aspect, Grid, touchUtil, put){
 
 return function(column){
 	// summary:
@@ -26,9 +26,8 @@ return function(column){
 		var grid = column.grid,
 			colSelector = ".dgrid-content .dgrid-column-" + column.id,
 			transitionEventSupported,
-			listeners = [], // to be removed when this column is "destroyed"
-			tr, query;
-		
+			listeners = []; // to be removed when this column is "destroyed"
+
 		if(!grid.store){
 			throw new Error("dgrid tree column plugin requires a store to operate.");
 		}

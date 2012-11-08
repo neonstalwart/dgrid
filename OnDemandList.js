@@ -16,9 +16,9 @@ return declare([List, _StoreMixin], {
 	//		easier to use, albiet it can limit the ability to instantly scroll to the end.
 	maxEmptySpace: Infinity,	
 	// bufferRows: Integer
-	//	  The number of rows to keep ready on each side of the viewport area so that the user can
-	//	  perform local scrolling without seeing the grid being built. Increasing this number can
-	//	  improve perceived performance when the data is being retrieved over a slow network.
+	//		The number of rows to keep ready on each side of the viewport area so that the user can
+	//		perform local scrolling without seeing the grid being built. Increasing this number can
+	//		improve perceived performance when the data is being retrieved over a slow network.
 	bufferRows: 10,
 	// farOffRemoval: Integer
 	//		Defines the minimum distance (in pixels) from the visible viewport area
@@ -61,7 +61,6 @@ return declare([List, _StoreMixin], {
 			options: options
 		};
 		if(!preloadNode){
-			var rootQuery = true;
 			var topPreload = {
 				node: put(this.contentNode, "div.dgrid-preload", {
 					rowIndex: 0
@@ -222,7 +221,7 @@ return declare([List, _StoreMixin], {
 						// we have reclaimed enough rows or we have gone beyond grid rows, let's call it good
 						break;
 					}
-					var nextRow = row[traversal]; // have to do this before removing it
+					nextRow = row[traversal]; // have to do this before removing it
 					var lastObserverIndex, currentObserverIndex = row.observerIndex;
 					if(currentObserverIndex != lastObserverIndex && lastObserverIndex > -1){
 						// we have gathered a whole page of observed rows, we can delete them now
@@ -374,7 +373,7 @@ return declare([List, _StoreMixin], {
 
 				// Isolate the variables in case we make multiple requests
 				// (which can happen if we need to render on both sides of an island of already-rendered rows)
-				(function(loadingNode, scrollNode, below, keepScrollTo, results){
+				(function(loadingNode, below, keepScrollTo, results){
 					Deferred.when(grid.renderArray(results, loadingNode, options), function(){
 						// can remove the loading node now
 						beforeNode = loadingNode.nextSibling;
@@ -410,7 +409,7 @@ return declare([List, _StoreMixin], {
 						put(loadingNode, "!");
 						throw e;
 					});
-				}).call(this, loadingNode, scrollNode, below, keepScrollTo, results);
+				}).call(this, loadingNode, below, keepScrollTo, results);
 				preload = preload.previous;
 			}
 		}

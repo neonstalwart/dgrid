@@ -4,7 +4,6 @@ define([
 	"dojo/_base/array",
 	"dojo/_base/Deferred",
 	"dojo/aspect",
-	"dojo/on",
 	"dojo/topic",
 	"dojo/has",
 	"dojo/dnd/Source",
@@ -14,7 +13,7 @@ define([
 	"dojo/has!touch?../util/touch",
 	"dojo/has!touch?./_DnD-touch-autoscroll",
 	"xstyle/css!dojo/resources/dnd.css"
-], function(declare, lang, arrayUtil, Deferred, aspect, on, topic, has, DnDSource, DnDManager, NodeList, put, touchUtil){
+], function(declare, lang, arrayUtil, Deferred, aspect, topic, has, DnDSource, DnDManager, NodeList, put, touchUtil){
 	// Requirements:
 	// * requires a store (sounds obvious, but not all Lists/Grids have stores...)
 	// * must support options.before in put calls

@@ -1,5 +1,5 @@
-define(["dojo/_base/kernel", "dojo/_base/declare", "dojo/_base/Deferred", "dojo/on", "dojo/aspect", "dojo/query", "dojo/has", "put-selector/put", "xstyle/has-class", "./Grid", "dojo/_base/sniff", "xstyle/css!./css/columnset.css"],
-function(kernel, declare, Deferred, listen, aspect, query, has, put, hasClass, Grid){
+define(["dojo/_base/kernel", "dojo/_base/declare", "dojo/_base/Deferred", "dojo/on", "dojo/aspect", "dojo/query", "dojo/has", "put-selector/put", "xstyle/has-class", "dojo/_base/sniff", "xstyle/css!./css/columnset.css"],
+function(kernel, declare, Deferred, listen, aspect, query, has, put, hasClass){
 	var colsetidAttr = "data-dgrid-column-set-id";
 	
 	hasClass("safari", "ie-7");
@@ -91,8 +91,8 @@ function(kernel, declare, Deferred, listen, aspect, query, has, put, hasClass, G
 						});
 				}
 			}
-			
-			function putScroller(columnSet, i){
+
+			function putScroller(i){
 				// function called for each columnSet
 				var scroller = scrollers[i] =
 					put(domNode, "div.dgrid-column-set-scroller.dgrid-scrollbar-height.dgrid-column-set-scroller-" + i +
@@ -121,7 +121,7 @@ function(kernel, declare, Deferred, listen, aspect, query, has, put, hasClass, G
 			scrollers = this._columnSetScrollers = {};
 			
 			for(i = 0, l = columnSets.length; i < l; i++){
-				putScroller(columnSets[i], i);
+				putScroller(i);
 			}
 			
 			positionScrollers(this);

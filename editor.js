@@ -37,7 +37,7 @@ function dataFromValue(value, oldValue){
 }
 
 // intermediary frontend to dataFromValue for HTML and widget editors
-function dataFromEditor(column, cmp){
+function dataFromEditor(cmp){
 	if(typeof cmp.get == "function"){ // widget
 		return dataFromValue(cmp.get("value"));
 	}else{ // HTML input
@@ -88,13 +88,13 @@ function setProperty(grid, cellElement, oldValue, value, triggerEvent){
 }
 
 // intermediary frontend to setProperty for HTML and widget editors
-function setPropertyFromEditor(grid, column, cmp, triggerEvent) {
+function setPropertyFromEditor(grid, cmp, triggerEvent) {
 	var value;
 	if(!cmp.isValid || cmp.isValid()){
 		value = setProperty(grid, (cmp.domNode || cmp).parentNode,
 			activeCell ? activeValue : cmp._dgridLastValue,
-			dataFromEditor(column, cmp), triggerEvent);
-		
+			dataFromEditor(cmp), triggerEvent);
+
 		if(activeCell){ // for editors with editOn defined
 			activeValue = value;
 		}else{ // for always-on editors, update _dgridLastValue immediately
@@ -128,14 +128,14 @@ function createEditor(column){
 		// the latter is delayed by setTimeouts in Dijit and will fire too late.
 		cmp.connect(cmp, editOn ? "onBlur" : "onChange", function(){
 			if(!cmp._dgridIgnoreChange){
-				setPropertyFromEditor(grid, column, this, {type: "widget"});
+				setPropertyFromEditor(grid, this, {type: "widget"});
 			}
 		});
 	}else{
 		handleChange = function(evt){
 			var target = evt.target;
 			if("_dgridLastValue" in target && target.className.indexOf("dgrid-input") > -1){
-				setPropertyFromEditor(grid, column, target, evt);
+				setPropertyFromEditor(grid, target, evt);
 			}
 		};
 
@@ -173,7 +173,7 @@ function createEditor(column){
 	return cmp;
 }
 
-function createSharedEditor(column, originalRenderCell){
+function createSharedEditor(column){
 	// Creates an editor instance with additional considerations for
 	// shared usage across an entire column (for columns with editOn specified).
 	
@@ -186,17 +186,15 @@ function createSharedEditor(column, originalRenderCell){
 			function(){
 				updateInputValue(cmp, cmp._dgridLastValue);
 				// call setProperty again in case we need to revert a previous change
-				setPropertyFromEditor(column.grid, column, cmp);
+				setPropertyFromEditor(column.grid, cmp);
 			},
 		keyHandle;
 	
 	function onblur(){
 		var parentNode = node.parentNode,
-			cell = column.grid.cell(node),
 			i = parentNode.children.length - 1,
-			options = { alreadyHooked: true },
-			renderedNode;
-		
+			options = { alreadyHooked: true };
+
 		// Remove the editor from the cell, to be reused later.
 		parentNode.removeChild(node);
 		
@@ -235,14 +233,12 @@ function createSharedEditor(column, originalRenderCell){
 	return cmp;
 }
 
-function showEditor(cmp, column, cell, value){
+function showEditor(cmp, cell, value){
 	// Places a shared editor into the newly-active cell in the column.
 	// Also called when rendering an editor in an "always-on" editor column.
-	
-	var grid = column.grid,
-		editor = column.editor,
-		isWidget = cmp.domNode;
-	
+
+	var isWidget = cmp.domNode;
+
 	// for regular inputs, we can update the value before even showing it
 	if(!isWidget){ updateInputValue(cmp, value); }
 	
@@ -293,9 +289,9 @@ function edit(cell) {
 			dirty = this.dirty && this.dirty[row.id];
 			value = (dirty && field in dirty) ? dirty[field] :
 				column.get ? column.get(row.data) : row.data[field];
-			
-			showEditor(column.editorInstance, column, cellElement, value);
-			
+
+			showEditor(column.editorInstance, cellElement, value);
+
 			// focus / blur-handler-resume logic is surrounded in a setTimeout
 			// to play nice with Keyboard's dgrid-cellfocusin as an editOn event
 			dfd = new Deferred();
@@ -352,7 +348,7 @@ return function(column, editor, editOn){
 		if(!grid.edit){ grid.edit = edit; }
 		
 		// Create one shared widget/input to be swapped into the active cell.
-		column.editorInstance = createSharedEditor(column, originalRenderCell);
+		column.editorInstance = createSharedEditor(column);
 	} : function(){
 		var grid = column.grid;
 		if(!grid.edit){ grid.edit = edit; }
@@ -394,9 +390,9 @@ return function(column, editor, editOn){
 	} : function(object, value, cell, options){
 		// always-on: create editor immediately upon rendering each cell
 		var cmp = createEditor(column);
-		
-		showEditor(cmp, column, cell, value);
-		
+
+		showEditor(cmp, cell, value);
+
 		// Maintain reference for later use.
 		cell[isWidget ? "widget" : "input"] = cmp;
 	};

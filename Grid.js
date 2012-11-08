@@ -39,7 +39,6 @@ function(kernel, declare, listen, has, put, List){
 			}
 			var element;
 			if(target.nodeType){
-				var object;
 				do{
 					if(this._rowIdToObject[target.id]){
 						break;
@@ -89,7 +88,6 @@ function(kernel, declare, listen, has, put, List){
 			// summary:
 			//		Generates the grid for each row (used by renderHeader and and renderRow)
 			var row = put("table.dgrid-row-table[role=presentation]"),
-				cellNavigation = this.cellNavigation,
 				// IE < 9 needs an explicit tbody; other browsers do not
 				tbody = (has("ie") < 9 || has("quirks")) ? put(row, "tbody") : row,
 				tr,
@@ -178,7 +176,6 @@ function(kernel, declare, listen, has, put, List){
 			//		Setup the headers for the grid
 			var
 				grid = this,
-				columns = this.columns,
 				headerNode = this.headerNode,
 				i = headerNode.childNodes.length;
 			
@@ -217,7 +214,7 @@ function(kernel, declare, listen, has, put, List){
 				// respond to click, space keypress, or enter keypress
 				if(event.type == "click" || event.keyCode == 32 /* space bar */ || (!has("opera") && event.keyCode == 13) /* enter */){
 					var target = event.target,
-						field, descending, parentNode, sort;
+						field, descending, sort;
 					do{
 						if(target.sortable){
 							// stash node subject to DOM manipulations,
